@@ -184,7 +184,6 @@
         async function fetchAI(prompt, retries = 5, delay = 1000) {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             
-            // DYNAMIC SYSTEM PROMPT
             const systemPrompt = `You are the Studio Concierge for artist Kolawole Adedeji Israel.
             RULES:
             1. If the user says "Hello", "Hi", or greets you, respond with a poetic welcome message.
