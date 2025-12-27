@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dreame Art Studio | Kolawole Adedeji Israel</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: { 500: '#D4AF37', 600: '#AA8C2C' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #050505; color: #f3f3f3; font-family: 'Raleway', sans-serif; overflow-x: hidden; }
+        
+        /* THE SHARPNESS ENGINE */
+        .artwork-image {
+            width: 100%; height: 100%; object-fit: contain; 
+            image-rendering: -webkit-optimize-contrast; 
+            image-rendering: high-quality;
+            -ms-interpolation-mode: bicubic;
+            transform: translateZ(0);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .artwork-container {
+            background: #000;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; height: 600px; 
+            border: 1px solid rgba(255,255,255,0.05); cursor: pointer;
+            position: relative;
+        }
+        
+        .artwork-container:hover .artwork-image { transform: scale(1.05); }
+
+        .artwork-card { background: #000000; border: 1px solid #1a1a1a; padding: 16px; transition: all 0.4s ease; }
+        .artwork-card:hover { border-color: #D4AF37; transform: translateY(-4px); }
+
+        .glass { background: rgba(0,0,0,0.96); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(212,175,55,0.2); }
+        .btn-gold { background: #D4AF37; color: black; font-weight: 800; text-transform: uppercase; letter-spacing: 0.2em; transition: all 0.3s ease; cursor: pointer; }
+        .btn-gold:hover { background: white; box-shadow: 0 0 20px rgba(212,175,55,0.4); }
+
+        .hero-bg { background: radial-gradient(circle at center, #1a1a1a 0%, #050505 100%); position: absolute; inset: 0; z-index: 0; }
+        .hero-img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) brightness(0.6); image-rendering: high-quality; }
+
+        #admin-panel { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.98); padding: 40px; overflow-y: auto; }
+        
+        .bot-msg { background: rgba(212,175,55,0.05); border-left: 2px solid #D4AF37; padding: 12px; margin-right: 32px; color: #ccc; border-radius: 4px; }
+        .user-msg { background: rgba(255,255,255,0.05); padding: 12px; margin-left: 32px; text-align: right; color: #fff; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed w-full z-[100] glass">
+        <div class="container mx-auto px-6 py-5 flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-[0.5em] text-gold-500 uppercase cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">Dreame Art</h1>
+            <div class="hidden md:flex gap-10 text-[10px] font-bold tracking-[0.3em] uppercase text-white/60">
+                <a href="#home" class="hover:text-gold-500 transition">Home</a>
+                <a href="#gallery" class="hover:text-gold-500 transition">Collection</a>
+                <button onclick="showAdmin()" class="hover:text-gold-500 transition">Owner Login</button>
+            </div>
+            <a href="https://wa.me/message/GWON4WELKNBMH1" target="_blank" class="btn-gold px-8 py-2 rounded text-[10px]">Inquire</a>
+        </div>
+    </nav>
+
+    <section id="home" class="relative h-screen flex items-center justify-center text-center px-6 overflow-hidden">
+        <div class="hero-bg">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black z-10"></div>
+            <img src="https://i.ibb.co/Z57L3Bv/image.jpg" class="hero-img" alt="Hero Art" loading="eager">
+        </div>
+        <div class="relative z-20 max-w-5xl">
+            <div class="mb-10">
+                <span class="block text-white/80 tracking-[0.6em] uppercase text-[12px] font-bold mb-4">Mastery in Gemstone Artistry</span>
+                <span class="block text-gold-500 tracking-[0.2em] uppercase text-[10px] font-medium italic">Reveal the uniqueness within</span>
+            </div>
+            <h2 class="text-4xl md:text-8xl mb-12 text-white font-bold uppercase tracking-[0.15em] leading-tight">Kolawole Adedeji Israel</h2>
+            <button onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})" class="btn-gold px-16 py-5 text-[11px]">Explore Collection</button>
+        </div>
+    </section>
+
+    <section id="gallery" class="py-32 px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-24">
+                <h3 class="text-3xl text-white uppercase tracking-[0.6em] font-light mb-6">Masterworks</h3>
+                <div class="h-px w-32 bg-gold-500/50 mx-auto"></div>
+                <p class="text-gray-500 text-[10px] mt-6 uppercase tracking-[0.4em] font-bold">Touch image for full high-fidelity viewing</p>
+            </div>
+            <div id="art-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"></div>
+        </div>
+    </section>
+
+    <div id="admin-panel">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex justify-between items-center mb-16">
+                <h2 class="text-gold-500 text-3xl font-bold uppercase tracking-widest">Studio Control</h2>
+                <button onclick="document.getElementById('admin-panel').style.display='none'" class="text-white uppercase text-xs tracking-widest font-bold">Exit Panel</button>
+            </div>
+            <div class="bg-white/5 p-8 rounded-lg border border-white/10">
+                <h3 class="text-white text-sm font-bold uppercase mb-6">Configuration</h3>
+                <input id="api-key-input" type="password" class="w-full bg-black border border-white/10 p-4 text-white text-xs mb-4" placeholder="Gemini API Key">
+                <button onclick="saveConfig()" class="btn-gold w-full py-3 text-[10px]">Update Studio Engine</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="ai-chat" class="fixed bottom-10 right-10 z-[1000] flex flex-col items-end">
+        <div id="chat-box" class="hidden glass w-80 md:w-[400px] h-[550px] mb-6 rounded-3xl flex flex-col overflow-hidden border border-white/10 shadow-2xl">
+            <div class="p-6 bg-gold-500 text-black font-black text-[11px] uppercase tracking-[0.3em] flex justify-between items-center">
+                <span>Studio Concierge</span>
+                <button onclick="toggleChat()"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="chat-content" class="flex-1 overflow-y-auto p-6 space-y-4 text-xs bg-black/40">
+                <div class="bot-msg">Welcome to the digital atelier of Israel Adedeji. I can provide details on gemstones, DHL shipping, and commissions.</div>
+            </div>
+            <div id="chat-loading" class="hidden px-6 py-2 text-[10px] italic text-gold-500 font-bold uppercase tracking-widest animate-pulse">Consulting...</div>
+            <div class="p-6 bg-black/80 flex gap-3">
+                <input type="text" id="chat-input" placeholder="Type inquiry..." class="flex-1 bg-white/5 border border-white/10 rounded-full px-6 py-3 text-xs text-white outline-none" onkeydown="if(event.key==='Enter') sendChat()" />
+                <button onclick="sendChat()" class="bg-gold-500 text-black w-10 h-10 rounded-full flex items-center justify-center"><i class="fas fa-paper-plane text-xs"></i></button>
+            </div>
+        </div>
+        <button onclick="toggleChat()" class="bg-gold-500 text-black w-16 h-16 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-all">
+            <i class="fas fa-gem text-xl"></i>
+        </button>
+    </div>
+
+    <script>
+        const apiKey = "AIzaSyCxWqjfSRe3ZKOkrPrLhv_E8yCvmEp3fx8";
+        
+        const artworks = [
+            { title: "Emerald Soul", price: 1200, gems: "Emerald", code: "Z57L3Bv" },
+            { title: "Nature embrace", price: 1200, gems: "Emerald", code: "5hggTnwZ" },
+            { title: "Another day of dialogue", price: 500, gems: "Ruby", code: "mFG5zYS9" },
+            { title: "To my precious one", price: 500, gems: "Emerald", code: "Jws1z0Bg" },
+            { title: "The mockingbird", price: 1200, gems: "Ruby", code: "7tY47W0V" },
+            { title: "Nostalgia", price: 1300, gems: "Ruby", code: "NdvZqdtB" },
+            { title: "Where, why solace?", price: 1200, gems: "Ruby", code: "8LW0g5Sp" },
+            { title: "In our fathers shoe", price: 1300, gems: "Pearls & Gold", code: "Y4LnGCVr" },
+            { title: "The enchanted reflection", price: 800, gems: "Diamond", code: "mC0PKFDs" },
+            { title: "Chronicles of love", price: 900, gems: "Blue Topaz", code: "N60mYsvM" },
+            { title: "Once upon a time", price: 1200, gems: "Ruby", code: "RGsxCwVQ" },
+            { title: "The tale of companionship", price: 1100, gems: "Ruby", code: "0j8BRvwb" },
+            { title: "Timeless gems", price: 1100, gems: "Emerald", code: "0R1Z0b2v" },
+            { title: "The iron collector", price: 1300, gems: "Ruby", code: "Y452d0ZT" },
+            { title: "Chronicles of love (II)", price: 1300, gems: "Ruby", code: "k6kLjK5y" },
+            { title: "Serenity in the dept", price: 1000, gems: "Aquamarine", code: "7dhVPXhG" },
+            { title: "The file of history", price: 1200, gems: "Amethyst", code: "gb2khJQx" },
+            { title: "Upon me", price: 400, gems: "Ruby", code: "HpFy63ML" },
+            { title: "Behind the Royal Regalia", price: 800, gems: "Diamonds & Rubies", code: "5hGtSGjv" }
+        ];
+
+        function loadGallery() {
+            const container = document.getElementById('art-container');
+            artworks.forEach(art => {
+                const imgUrl = `https://i.ibb.co/${art.code}/image.jpg`;
+                container.innerHTML += `
+                    <div class="artwork-card">
+                        <div class="artwork-container" onclick="window.open('${imgUrl}', '_blank')">
+                            <img src="${imgUrl}" alt="${art.title}" class="artwork-image">
+                        </div>
+                        <div class="pt-8 text-center">
+                            <h4 class="text-white text-[10px] font-extrabold uppercase tracking-[0.3em] mb-4">${art.title}</h4>
+                            <div class="flex justify-between items-center mb-6 px-4">
+                                <span class="text-gold-500 text-[9px] uppercase font-bold tracking-widest">${art.gems}</span>
+                                <span class="text-white text-xl font-bold tracking-tighter">$${art.price.toLocaleString()}</span>
+                            </div>
+                            <button onclick="window.open('https://wa.me/message/GWON4WELKNBMH1?text=Inquiry for: ${art.title}', '_blank')" 
+                                    class="w-full btn-gold py-4 text-[10px]">Studio Inquiry</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        async function fetchAI(prompt, retries = 5, delay = 1000) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            // DYNAMIC SYSTEM PROMPT
+            const systemPrompt = `You are the Studio Concierge for artist Kolawole Adedeji Israel.
+            RULES:
+            1. If the user says "Hello", "Hi", or greets you, respond with a poetic welcome message.
+            2. If the user asks about "Price", "Cost", or "Shipping", do NOT repeat the greeting. Instead, provide a sophisticated analysis of the value.
+            3. PRICING: Pieces range from $400 to $1,300 based on gem rarity and complexity.
+            4. SHIPPING: $85 Global / $35 Africa via DHL.
+            5. GEMSTONES: Emeralds (renewal), Rubies (passion), Diamonds (strength). 
+            6. ALWAYS be poetic, refined, and professional. Ensure your response directly matches the nature of their query.`;
+
+            const body = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+                    if (response.ok) return await response.json();
+                } catch (e) {}
+                await new Promise(res => setTimeout(res, delay));
+                delay *= 2;
+            }
+            throw new Error("Offline");
+        }
+
+        async function sendChat() {
+            const input = document.getElementById('chat-input');
+            const box = document.getElementById('chat-content');
+            const val = input.value.trim();
+            if(!val) return;
+            box.innerHTML += `<div class="user-msg">${val}</div>`;
+            input.value = '';
+            document.getElementById('chat-loading').classList.remove('hidden');
+            try {
+                const data = await fetchAI(val);
+                const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "The studio concierge is currently busy.";
+                box.innerHTML += `<div class="bot-msg">${reply}</div>`;
+            } catch (e) {
+                box.innerHTML += `<div class="bot-msg">Connection issue. Please verify the engine status in the Owner Panel.</div>`;
+            }
+            document.getElementById('chat-loading').classList.add('hidden');
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function toggleChat() { document.getElementById('chat-box').classList.toggle('hidden'); }
+        function showAdmin() { if(prompt("Pass:") === "crownlaugh") document.getElementById('admin-panel').style.display='block'; }
+        function saveConfig() { localStorage.setItem('dreame_api_key', document.getElementById('api-key-input').value); location.reload(); }
+
+        window.onload = loadGallery;
+    </script>
+</body>
+</html>
